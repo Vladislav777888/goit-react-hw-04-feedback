@@ -31,9 +31,7 @@ export function App() {
     }
   };
 
-  const countTotalFeedback = () => {
-    return good + neutral + bad;
-  };
+  const countTotalFeedback = () => good + neutral + bad;
 
   const countPositiveFeedbackPercentage = () => {
     const totalValue = countTotalFeedback();
