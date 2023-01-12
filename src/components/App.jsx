@@ -5,32 +5,37 @@ import { Section } from './Section';
 import { Statistics } from './Statistics';
 import { Notification } from './Notification';
 
-const feedbackList = [
-  { id: 'good', title: 'Good' },
-  { id: 'neutral', title: 'Neutral' },
-  { id: 'bad', title: 'Bad' },
-];
-
 export function App() {
-  const [feedbacks, setFeedbacks] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  });
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   const handleClick = evt => {
-    const { name } = evt.target;
-    setFeedbacks(prev => ({ ...prev, [name]: prev[name] + 1 }));
+    const key = evt.target.textContent;
+
+    switch (key) {
+      case 'Good':
+        setGood(prev => prev + 1);
+        break;
+
+      case 'Neutral':
+        setNeutral(prev => prev + 1);
+        break;
+
+      case 'Bad':
+        setBad(prev => prev + 1);
+        break;
+
+      default:
+        break;
+    }
   };
 
-  const countTotalFeedback = () => {
-    const values = Object.values(feedbacks).reduce((acc, el) => acc + el, 0);
-    return values;
-  };
+  const countTotalFeedback = () => good + neutral + bad;
 
   const countPositiveFeedbackPercentage = () => {
     const totalValue = countTotalFeedback();
-    const positivValue = (feedbacks.good * 100) / totalValue;
+    const positivValue = (good * 100) / totalValue;
 
     return Math.round(positivValue);
   };
@@ -41,14 +46,18 @@ export function App() {
   return (
     <Box px={20}>
       <Section title="Please leave feedback">
-        <FeedbackOptions options={feedbackList} onLeaveFeedback={handleClick} />
+        <FeedbackOptions
+          options={['Good', 'Neutral', 'Bad']}
+          onLeaveFeedback={handleClick}
+        />
       </Section>
 
       {totalValue ? (
         <Section title="Statistics">
           <Statistics
-            options={feedbackList}
-            feedbacks={feedbacks}
+            good={good}
+            neutral={neutral}
+            bad={bad}
             total={totalValue}
             positivePercentage={positivValue}
           />
