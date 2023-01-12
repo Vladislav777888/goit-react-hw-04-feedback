@@ -6,8 +6,13 @@ export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
   return (
     <Box mt={20} display="flex" width={250} justifyContent="space-between">
       {options.map(option => (
-        <Button key={option} onClick={onLeaveFeedback} type="button">
-          {option}
+        <Button
+          key={option.id}
+          onClick={onLeaveFeedback}
+          type="button"
+          name={option.id}
+        >
+          {option.title}
         </Button>
       ))}
     </Box>
@@ -15,6 +20,11 @@ export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
 };
 
 FeedbackOptions.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
   onLeaveFeedback: PropTypes.func.isRequired,
 };
